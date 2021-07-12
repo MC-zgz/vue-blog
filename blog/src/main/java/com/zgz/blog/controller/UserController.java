@@ -4,11 +4,10 @@ package com.zgz.blog.controller;
 import com.zgz.blog.common.lang.Result;
 import com.zgz.blog.entity.User;
 import com.zgz.blog.service.UserService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -25,6 +24,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+    @RequiresAuthentication
     @GetMapping("/index")
     public Result index(){
         User user = userService.getById(1);
@@ -36,4 +37,9 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/save")
+    public Result save(@Validated @RequestBody User user){
+
+        return Result.seccess(user);
+    }
 }
