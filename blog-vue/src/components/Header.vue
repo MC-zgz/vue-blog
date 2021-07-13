@@ -10,7 +10,8 @@
 		    <el-divider direction="vertical"></el-divider>
 		    <span><el-link type="success" href="/blog/add">发表博客</el-link></span>
 		    <el-divider direction="vertical"></el-divider>
-		    <span><el-link type="danger" @click="logout">退出</el-link></span>
+			<span v-show="!hasLogin"><el-link type="info" href="/login">登录</el-link></span>
+		    <span v-show="hasLogin"><el-link type="danger" @click="logout">退出</el-link></span>
 		  </div>
 	</div>
 </template>
@@ -23,8 +24,8 @@
 				user:{
 					username:'请先登录',
 					avatar:'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-				}
-				
+				},
+				hasLogin:false
 			}
 		},
 		methods:{
@@ -39,6 +40,15 @@
 					_this.$router.push("/login")
 				})	
 			}
+		},
+		created() {
+			if(this.$store.getters.getUser.username) {
+				this.user.username = this.$store.getters.getUser.username
+				this.user.avatar = this.$store.getters.getUser.avatar
+
+				this.hasLogin = true
+			}
+		
 		}
 	}
 </script>
